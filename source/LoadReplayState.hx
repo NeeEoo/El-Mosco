@@ -21,10 +21,10 @@ class LoadReplayState extends MusicBeatState
 	var selector:FlxText;
 	var curSelected:Int = 0;
 
-    var songs:Array<FreeplayState.SongMetadata> = [];
+	var songs:Array<FreeplayState.SongMetadata> = [];
 
 	var controlsStrings:Array<String> = [];
-    var actualNames:Array<String> = [];
+	var actualNames:Array<String> = [];
 
 	private var grpControls:FlxTypedGroup<Alphabet>;
 	var versionShit:FlxText;
@@ -32,33 +32,33 @@ class LoadReplayState extends MusicBeatState
 	override function create()
 	{
 		var menuBG:FlxSprite = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
-        #if sys
+		#if sys
 		controlsStrings = sys.FileSystem.readDirectory(Sys.getCwd() + "/assets/replays/");
-        #end
+		#end
 		trace(controlsStrings);
 
-        controlsStrings.sort(Reflect.compare);
+		controlsStrings.sort(Reflect.compare);
 
-        addWeek(['Bopeebo', 'Fresh', 'Dadbattle'], 1, ['dad']);
-        addWeek(['Spookeez', 'South', 'Monster'], 2, ['spooky']);
-        addWeek(['Pico', 'Philly', 'Blammed'], 3, ['pico']);
+		addWeek(['Bopeebo', 'Fresh', 'Dadbattle'], 1, ['dad']);
+		addWeek(['Spookeez', 'South', 'Monster'], 2, ['spooky']);
+		addWeek(['Pico', 'Philly', 'Blammed'], 3, ['pico']);
 
-        addWeek(['Satin-Panties', 'High', 'Milf'], 4, ['mom']);
-        addWeek(['Cocoa', 'Eggnog', 'Winter-Horrorland'], 5, ['parents-christmas', 'parents-christmas', 'monster-christmas']);
-        
-        addWeek(['Senpai', 'Roses', 'Thorns'], 6, ['senpai', 'senpai', 'spirit']);
+		addWeek(['Satin-Panties', 'High', 'Milf'], 4, ['mom']);
+		addWeek(['Cocoa', 'Eggnog', 'Winter-Horrorland'], 5, ['parents-christmas', 'parents-christmas', 'monster-christmas']);
+		
+		addWeek(['Senpai', 'Roses', 'Thorns'], 6, ['senpai', 'senpai', 'spirit']);
 
 
-        for(i in 0...controlsStrings.length)
-        {
-            var string:String = controlsStrings[i];
-            actualNames[i] = string;
+		for(i in 0...controlsStrings.length)
+		{
+			var string:String = controlsStrings[i];
+			actualNames[i] = string;
 			var rep:Replay = Replay.LoadReplay(string);
-            controlsStrings[i] = string.split("time")[0] + " " + (rep.replay.songDiff == 2 ? "HARD" : rep.replay.songDiff == 1 ? "EASY" : "NORMAL");
-        }
+			controlsStrings[i] = string.split("time")[0] + " " + (rep.replay.songDiff == 2 ? "HARD" : rep.replay.songDiff == 1 ? "EASY" : "NORMAL");
+		}
 
-        if (controlsStrings.length == 0)
-            controlsStrings.push("No Replays...");
+		if (controlsStrings.length == 0)
+			controlsStrings.push("No Replays...");
 
 		menuBG.color = 0xFFea71fd;
 		menuBG.setGraphicSize(Std.int(menuBG.width * 1.1));
@@ -72,10 +72,10 @@ class LoadReplayState extends MusicBeatState
 
 		for (i in 0...controlsStrings.length)
 		{
-				var controlLabel:Alphabet = new Alphabet(0, (70 * i) + 30, controlsStrings[i], true, false);
-				controlLabel.isMenuItem = true;
-				controlLabel.targetY = i;
-				grpControls.add(controlLabel);
+			var controlLabel:Alphabet = new Alphabet(0, (70 * i) + 30, controlsStrings[i], true, false);
+			controlLabel.isMenuItem = true;
+			controlLabel.targetY = i;
+			grpControls.add(controlLabel);
 			// DONT PUT X IN THE FIRST PARAMETER OF new ALPHABET() !!
 		}
 
@@ -96,38 +96,38 @@ class LoadReplayState extends MusicBeatState
 		super.create();
 	}
 
-    public function getWeekNumbFromSong(songName:String):Int
-    {
-        var week:Int = 0;
-        for (i in 0...songs.length)
-        {
-            var pog:FreeplayState.SongMetadata = songs[i];
-            if (pog.songName.toLowerCase() == songName)
-                week = pog.week;
-        }
-        return week;
-    }
+	public function getWeekNumbFromSong(songName:String):Int
+	{
+		var week:Int = 0;
+		for (i in 0...songs.length)
+		{
+			var pog:FreeplayState.SongMetadata = songs[i];
+			if (pog.songName.toLowerCase() == songName)
+				week = pog.week;
+		}
+		return week;
+	}
 
 	public function addSong(songName:String, weekNum:Int, songCharacter:String)
-        {
-            songs.push(new FreeplayState.SongMetadata(songName, weekNum, songCharacter));
-        }
-    
-        public function addWeek(songs:Array<String>, weekNum:Int, ?songCharacters:Array<String>)
-        {
-            if (songCharacters == null)
-                songCharacters = ['bf'];
-    
-            var num:Int = 0;
-            for (song in songs)
-            {
-                addSong(song, weekNum, songCharacters[num]);
-    
-                if (songCharacters.length != 1)
-                    num++;
-            }
-        }
-    
+		{
+			songs.push(new FreeplayState.SongMetadata(songName, weekNum, songCharacter));
+		}
+	
+		public function addWeek(songs:Array<String>, weekNum:Int, ?songCharacters:Array<String>)
+		{
+			if (songCharacters == null)
+				songCharacters = ['bf'];
+	
+			var num:Int = 0;
+			for (song in songs)
+			{
+				addSong(song, weekNum, songCharacters[num]);
+	
+				if (songCharacters.length != 1)
+					num++;
+			}
+		}
+	
 
 	override function update(elapsed:Float)
 	{
@@ -143,18 +143,18 @@ class LoadReplayState extends MusicBeatState
 
 			if (controls.ACCEPT && grpControls.members[curSelected].text != "No Replays...")
 			{
-                trace('loading ' + actualNames[curSelected]);
-                PlayState.rep = Replay.LoadReplay(actualNames[curSelected]);
+				trace('loading ' + actualNames[curSelected]);
+				PlayState.rep = Replay.LoadReplay(actualNames[curSelected]);
 
-                PlayState.loadRep = true;
+				PlayState.loadRep = true;
 
-                var poop:String = Highscore.formatSong(PlayState.rep.replay.songName.toLowerCase(), PlayState.rep.replay.songDiff);
+				var poop:String = Highscore.formatSong(PlayState.rep.replay.songName.toLowerCase(), PlayState.rep.replay.songDiff);
 
 				PlayState.SONG = Song.loadFromJson(poop, PlayState.rep.replay.songName.toLowerCase());
-                PlayState.isStoryMode = false;
-                PlayState.storyDifficulty = PlayState.rep.replay.songDiff;
-                PlayState.storyWeek = getWeekNumbFromSong(PlayState.rep.replay.songName);
-                LoadingState.loadAndSwitchState(new PlayState());
+				PlayState.isStoryMode = false;
+				PlayState.storyDifficulty = PlayState.rep.replay.songDiff;
+				PlayState.storyWeek = getWeekNumbFromSong(PlayState.rep.replay.songName);
+				LoadingState.loadAndSwitchState(new PlayState());
 			}
 	}
 
