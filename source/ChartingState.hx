@@ -110,7 +110,6 @@ class ChartingState extends MusicBeatState
 				player1: 'bf',
 				player2: 'dad',
 				gfVersion: 'gf',
-				noteStyle: 'normal',
 				stage: 'stage',
 				speed: 1,
 				validScore: false
@@ -305,7 +304,6 @@ class ChartingState extends MusicBeatState
 		var characters:Array<String> = CoolUtil.coolTextFile(Paths.txt('characterList'));
 		var gfVersions:Array<String> = CoolUtil.coolTextFile(Paths.txt('gfVersionList'));
 		var stages:Array<String> = CoolUtil.coolTextFile(Paths.txt('stageList'));
-		var noteStyles:Array<String> = CoolUtil.coolTextFile(Paths.txt('noteStyleList'));
 
 		var player1DropDown = new FlxUIDropDownMenu(10, 100, FlxUIDropDownMenu.makeStrIdLabelArray(characters, true), function(character:String)
 		{
@@ -339,14 +337,6 @@ class ChartingState extends MusicBeatState
 
 		var stageLabel = new FlxText(140,180,64,'Stage');
 
-		var noteStyleDropDown = new FlxUIDropDownMenu(10, 300, FlxUIDropDownMenu.makeStrIdLabelArray(noteStyles, true), function(noteStyle:String)
-		{
-			_song.noteStyle = noteStyles[Std.parseInt(noteStyle)];
-		});
-		noteStyleDropDown.selectedLabel = _song.noteStyle;
-
-		var noteStyleLabel = new FlxText(10,280,64,'Note Skin');
-
 		var tab_group_song = new FlxUI(null, UI_box);
 		tab_group_song.name = "Song";
 		tab_group_song.add(UI_songTitle);
@@ -376,8 +366,6 @@ class ChartingState extends MusicBeatState
 
 		var tab_group_assets = new FlxUI(null, UI_box);
 		tab_group_assets.name = "Assets";
-		tab_group_assets.add(noteStyleDropDown);
-		tab_group_assets.add(noteStyleLabel);
 		tab_group_assets.add(gfVersionDropDown);
 		tab_group_assets.add(gfVersionLabel);
 		tab_group_assets.add(stageDropDown);

@@ -53,23 +53,20 @@ class LoadingState extends MusicBeatState
 		add(gfDance);
 		add(logo);
 
-		initSongsManifest().onComplete
-		(
-			function (lib)
-			{
-				callbacks = new MultiCallback(onLoad);
-				var introComplete = callbacks.add("introComplete");
-				checkLoadSong(getSongPath());
-				if (PlayState.SONG.needsVoices)
-					checkLoadSong(getVocalPath());
-				checkLibrary("shared");
-				checkLibrary("elmosco");
+		initSongsManifest().onComplete(function(lib)
+		{
+			callbacks = new MultiCallback(onLoad);
+			var introComplete = callbacks.add("introComplete");
+			checkLoadSong(getSongPath());
+			if (PlayState.SONG.needsVoices)
+				checkLoadSong(getVocalPath());
+			checkLibrary("shared");
+			checkLibrary("elmosco");
 
-				var fadeTime = 0.5;
-				FlxG.camera.fade(FlxG.camera.bgColor, fadeTime, true);
-				new FlxTimer().start(fadeTime + MIN_TIME, function(_) introComplete());
-			}
-		);
+			var fadeTime = 0.5;
+			FlxG.camera.fade(FlxG.camera.bgColor, fadeTime, true);
+			new FlxTimer().start(fadeTime + MIN_TIME, function(_) introComplete());
+		});
 	}
 
 	function checkLoadSong(path:String)
@@ -148,7 +145,8 @@ class LoadingState extends MusicBeatState
 
 	static function getNextState(target:FlxState, stopMusic = false):FlxState
 	{
-		Paths.setCurrentLevel("week" + PlayState.storyWeek);
+		//Paths.setCurrentLevel("week" + PlayState.storyWeek);
+		Paths.setCurrentLevel("elmosco");
 		#if NO_PRELOAD_ALL
 		var loaded = isSoundLoaded(getSongPath())
 			&& (!PlayState.SONG.needsVoices || isSoundLoaded(getVocalPath()))
