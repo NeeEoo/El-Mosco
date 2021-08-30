@@ -3,7 +3,6 @@ package;
 /// Code created by Rozebud for FPS Plus (thanks rozebud)
 // modified by KadeDev for use in Kade Engine/Tricky
 
-import flixel.util.FlxAxes;
 import flixel.FlxSubState;
 import Options.Option;
 import flixel.input.FlxInput;
@@ -37,10 +36,12 @@ class KeyBindMenu extends FlxSubState
 	var defaultKeys:Array<String> = ["A", "S", "W", "D", "R"];
 	var curSelected:Int = 0;
 
-	var keys:Array<String> = [FlxG.save.data.leftBind,
-							  FlxG.save.data.downBind,
-							  FlxG.save.data.upBind,
-							  FlxG.save.data.rightBind];
+	var keys:Array<String> = [
+		FlxG.save.data.leftBind,
+		FlxG.save.data.downBind,
+		FlxG.save.data.upBind,
+		FlxG.save.data.rightBind
+	];
 
 	var tempKey:String = "";
 	var blacklist:Array<String> = ["ESCAPE", "ENTER", "BACKSPACE", "SPACE"];
@@ -51,16 +52,13 @@ class KeyBindMenu extends FlxSubState
 	var state:String = "select";
 
 	override function create()
-	{	
-
+	{
 		for (i in 0...keys.length)
 		{
 			var k = keys[i];
 			if (k == null)
 				keys[i] = defaultKeys[i];
 		}
-	
-		//FlxG.sound.playMusic('assets/music/configurator' + TitleState.soundExt);
 
 		persistentUpdate = persistentDraw = true;
 
@@ -79,7 +77,7 @@ class KeyBindMenu extends FlxSubState
 		infoText.borderSize = 2;
 		infoText.borderQuality = 3;
 		infoText.alpha = 0;
-		infoText.screenCenter(FlxAxes.X);
+		infoText.screenCenter(X);
 		add(infoText);
 		add(keyTextDisplay);
 
@@ -99,9 +97,8 @@ class KeyBindMenu extends FlxSubState
 
 	override function update(elapsed:Float)
 	{
-
-		switch(state){
-
+		switch(state)
+		{
 			case "select":
 				if (FlxG.keys.justPressed.UP)
 				{
@@ -162,26 +159,22 @@ class KeyBindMenu extends FlxSubState
 			textUpdate();
 
 		super.update(elapsed);
-		
 	}
 
-	function textUpdate(){
-
+	function textUpdate()
+	{
 		keyTextDisplay.text = "\n\n";
 
 		for(i in 0...4){
-
 			var textStart = (i == curSelected) ? "> " : "  ";
 			keyTextDisplay.text += textStart + keyText[i] + ": " + ((keys[i] != keyText[i]) ? (keys[i] + " / ") : "" ) + keyText[i] + " ARROW\n";
-
 		}
 
 		keyTextDisplay.screenCenter();
-
 	}
 
-	function save(){
-
+	function save()
+	{
 		FlxG.save.data.upBind = keys[2];
 		FlxG.save.data.downBind = keys[1];
 		FlxG.save.data.leftBind = keys[0];
@@ -190,20 +183,18 @@ class KeyBindMenu extends FlxSubState
 		FlxG.save.flush();
 
 		PlayerSettings.player1.controls.loadKeyBinds();
-
 	}
 
-	function reset(){
-
-		for(i in 0...5){
+	function reset()
+	{
+		for(i in 0...5) {
 			keys[i] = defaultKeys[i];
 		}
 		quit();
-
 	}
 
-	function quit(){
-
+	function quit()
+	{
 		state = "exiting";
 
 		save();
@@ -215,9 +206,8 @@ class KeyBindMenu extends FlxSubState
 		FlxTween.tween(infoText, {alpha: 0}, 1, {ease: FlxEase.expoInOut});
 	}
 
-
-	function addKey(r:String){
-
+	function addKey(r:String)
+	{
 		var shouldReturn:Bool = true;
 
 		var notAllowed:Array<String> = [];
@@ -227,13 +217,13 @@ class KeyBindMenu extends FlxSubState
 		trace(notAllowed);
 
 		for(x in 0...keys.length)
-			{
-				var oK = keys[x];
-				if(oK == r)
-					keys[x] = null;
-				if (notAllowed.contains(oK))
-					return;
-			}
+		{
+			var oK = keys[x];
+			if(oK == r)
+				keys[x] = null;
+			if (notAllowed.contains(oK))
+				return;
+		}
 
 		if(shouldReturn){
 			keys[curSelected] = r;
@@ -252,7 +242,7 @@ class KeyBindMenu extends FlxSubState
 	function changeItem(_amount:Int = 0)
 	{
 		curSelected += _amount;
-				
+
 		if (curSelected > 3)
 			curSelected = 0;
 		if (curSelected < 0)

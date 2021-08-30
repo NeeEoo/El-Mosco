@@ -91,7 +91,7 @@ class Ratings
 
 		return ranking;
 	}
-	
+
 	public static function CalculateRating(noteDiff:Float, ?customSafeZone:Float):String // Generate a judgement through some timing shit
 	{
 		var customTimeScale = Conductor.timeScale;
@@ -108,7 +108,7 @@ class Ratings
 
 		if (FlxG.save.data.botplay)
 			return "good"; // FUNNY
-		
+
 		if (noteDiff > 166 * customTimeScale) // so god damn early its a miss
 			return "miss";
 		if (noteDiff > 135 * customTimeScale) // way early
@@ -130,7 +130,7 @@ class Ratings
 
 	public static function CalculateRanking(score:Int,scoreDef:Int,nps:Int,maxNPS:Int,accuracy:Float):String
 	{
-		return 
+		return
 		(FlxG.save.data.npsDisplay ? "NPS: " + nps + " (Max " + maxNPS + ")" + (!FlxG.save.data.botplay ? " | " : "") : "") + (!FlxG.save.data.botplay ?	// NPS Toggle
 		"Score:" + (Conductor.safeFrames != 10 ? score + " (" + scoreDef + ")" : "" + score) + 									// Score
 		" | Combo Breaks:" + PlayState.misses + 																				// Misses/Combo Breaks

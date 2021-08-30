@@ -18,7 +18,6 @@ import sys.io.File;
 
 class LoadReplayState extends MusicBeatState
 {
-	var selector:FlxText;
 	var curSelected:Int = 0;
 
 	var songs:Array<FreeplayState.SongMetadata> = [];
@@ -45,8 +44,6 @@ class LoadReplayState extends MusicBeatState
 
 		addWeek(['Satin-Panties', 'High', 'Milf'], 4, ['mom']);
 		addWeek(['Cocoa', 'Eggnog', 'Winter-Horrorland'], 5, ['parents-christmas', 'parents-christmas', 'monster-christmas']);
-		
-		addWeek(['Senpai', 'Roses', 'Thorns'], 6, ['senpai', 'senpai', 'spirit']);
 
 
 		for(i in 0...controlsStrings.length)
@@ -79,13 +76,11 @@ class LoadReplayState extends MusicBeatState
 			// DONT PUT X IN THE FIRST PARAMETER OF new ALPHABET() !!
 		}
 
-
 		versionShit = new FlxText(5, FlxG.height - 34, 0, "Replay Loader (ESCAPE TO GO BACK)\nNOTICE!!!! Replays are in a beta stage, and they are probably not 100% correct. expect misses and other stuff that isn't there!", 12);
 		versionShit.scrollFactor.set();
 		versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(versionShit);
 
-		
 		poggerDetails = new FlxText(5, 34, 0, "Replay Details - \nnone", 12);
 		poggerDetails.scrollFactor.set();
 		poggerDetails.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
@@ -109,63 +104,57 @@ class LoadReplayState extends MusicBeatState
 	}
 
 	public function addSong(songName:String, weekNum:Int, songCharacter:String)
+	{
+		songs.push(new FreeplayState.SongMetadata(songName, weekNum, songCharacter));
+	}
+
+	public function addWeek(songs:Array<String>, weekNum:Int, ?songCharacters:Array<String>)
+	{
+		if (songCharacters == null)
+			songCharacters = ['bf'];
+
+		var num:Int = 0;
+		for (song in songs)
 		{
-			songs.push(new FreeplayState.SongMetadata(songName, weekNum, songCharacter));
+			addSong(song, weekNum, songCharacters[num]);
+
+			if (songCharacters.length != 1)
+				num++;
 		}
-	
-		public function addWeek(songs:Array<String>, weekNum:Int, ?songCharacters:Array<String>)
-		{
-			if (songCharacters == null)
-				songCharacters = ['bf'];
-	
-			var num:Int = 0;
-			for (song in songs)
-			{
-				addSong(song, weekNum, songCharacters[num]);
-	
-				if (songCharacters.length != 1)
-					num++;
-			}
-		}
-	
+	}
 
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
 
-			if (controls.BACK)
-				FlxG.switchState(new OptionsMenu());
-			if (controls.UP_P)
-				changeSelection(-1);
-			if (controls.DOWN_P)
-				changeSelection(1);
-		
+		if (controls.BACK)
+			FlxG.switchState(new OptionsMenu());
+		if (controls.UP_P)
+			changeSelection(-1);
+		if (controls.DOWN_P)
+			changeSelection(1);
 
-			if (controls.ACCEPT && grpControls.members[curSelected].text != "No Replays...")
-			{
-				trace('loading ' + actualNames[curSelected]);
-				PlayState.rep = Replay.LoadReplay(actualNames[curSelected]);
+		if (controls.ACCEPT && grpControls.members[curSelected].text != "No Replays...")
+		{
+			trace('loading ' + actualNames[curSelected]);
+			PlayState.rep = Replay.LoadReplay(actualNames[curSelected]);
 
-				PlayState.loadRep = true;
+			PlayState.loadRep = true;
 
-				var poop:String = Highscore.formatSong(PlayState.rep.replay.songName.toLowerCase(), PlayState.rep.replay.songDiff);
+			var poop:String = Highscore.formatSong(PlayState.rep.replay.songName.toLowerCase(), PlayState.rep.replay.songDiff);
 
-				PlayState.SONG = Song.loadFromJson(poop, PlayState.rep.replay.songName.toLowerCase());
-				PlayState.isStoryMode = false;
-				PlayState.storyDifficulty = PlayState.rep.replay.songDiff;
-				PlayState.storyWeek = getWeekNumbFromSong(PlayState.rep.replay.songName);
-				LoadingState.loadAndSwitchState(new PlayState());
-			}
+			PlayState.SONG = Song.loadFromJson(poop, PlayState.rep.replay.songName.toLowerCase());
+			PlayState.isStoryMode = false;
+			PlayState.storyDifficulty = PlayState.rep.replay.songDiff;
+			PlayState.storyWeek = getWeekNumbFromSong(PlayState.rep.replay.songName);
+			LoadingState.loadAndSwitchState(new PlayState());
+		}
 	}
 
 	var isSettingControl:Bool = false;
 
 	function changeSelection(change:Int = 0)
 	{
-		#if !switch
-		// NGio.logEvent('Fresh');
-		#end
-		
 		FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
 
 		curSelected += change;
@@ -179,8 +168,6 @@ class LoadReplayState extends MusicBeatState
 
 		poggerDetails.text = "Replay Details - \nDate Created: " + rep.replay.timestamp + "\nSong: " + rep.replay.songName + "\nReplay Version: " + (rep.replay.replayGameVer != Replay.version ? "OUTDATED" : "Latest");
 
-		// selector.y = (70 * curSelected) + 30;
-
 		var bullShit:Int = 0;
 
 		for (item in grpControls.members)
@@ -189,12 +176,10 @@ class LoadReplayState extends MusicBeatState
 			bullShit++;
 
 			item.alpha = 0.6;
-			// item.setGraphicSize(Std.int(item.width * 0.8));
 
 			if (item.targetY == 0)
 			{
 				item.alpha = 1;
-				// item.setGraphicSize(Std.int(item.width));
 			}
 		}
 	}

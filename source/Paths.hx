@@ -1,5 +1,6 @@
 package;
 
+import openfl.text.Font;
 import flixel.FlxG;
 import flixel.graphics.frames.FlxAtlasFrames;
 import openfl.utils.AssetType;
@@ -98,20 +99,20 @@ class Paths
 	inline static public function voices(song:String)
 	{
 		var songLowercase = StringTools.replace(song, " ", "-").toLowerCase();
-			switch (songLowercase) {
-				case 'dad-battle': songLowercase = 'dadbattle';
-				case 'philly-nice': songLowercase = 'philly';
-			}
+		switch (songLowercase) {
+			case 'dad-battle': songLowercase = 'dadbattle';
+			case 'philly-nice': songLowercase = 'philly';
+		}
 		return 'songs:assets/songs/${songLowercase}/Voices.$SOUND_EXT';
 	}
 
 	inline static public function inst(song:String)
 	{
 		var songLowercase = StringTools.replace(song, " ", "-").toLowerCase();
-			switch (songLowercase) {
-				case 'dad-battle': songLowercase = 'dadbattle';
-				case 'philly-nice': songLowercase = 'philly';
-			}
+		switch (songLowercase) {
+			case 'dad-battle': songLowercase = 'dadbattle';
+			case 'philly-nice': songLowercase = 'philly';
+		}
 		return 'songs:assets/songs/${songLowercase}/Inst.$SOUND_EXT';
 	}
 
@@ -123,6 +124,30 @@ class Paths
 	inline static public function font(key:String)
 	{
 		return 'assets/fonts/$key';
+	}
+
+	inline static public function fontLib(key:String, ?library:String)
+	{
+		return getPath('fonts/$key', FONT, library);
+	}
+
+	static public function getAssetFont(filename:String) {
+		var fontFile = Paths.fontLib(filename);
+		var font = OpenFlAssets.getFont(fontFile);
+		var registeredFonts = Font.enumerateFonts();
+
+		font.fontName = fontFile;
+
+		if(!registeredFonts.contains(font)) {
+			Font.registerFont(font);
+		}
+
+		return font.fontName;
+	}
+
+	inline static public function exists(key:String, type:AssetType = TEXT)
+	{
+		return OpenFlAssets.exists(key, type);
 	}
 
 	inline static public function getSparrowAtlas(key:String, ?library:String)

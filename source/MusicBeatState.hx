@@ -1,8 +1,5 @@
 package;
 
-#if windows
-import Discord.DiscordClient;
-#end
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import openfl.Lib;
@@ -35,7 +32,6 @@ class MusicBeatState extends FlxUIState
 		super.create();
 	}
 
-
 	var array:Array<FlxColor> = [
 		FlxColor.fromRGB(148, 0, 211),
 		FlxColor.fromRGB(75, 0, 130),
@@ -43,7 +39,7 @@ class MusicBeatState extends FlxUIState
 		FlxColor.fromRGB(0, 255, 0),
 		FlxColor.fromRGB(255, 255, 0),
 		FlxColor.fromRGB(255, 127, 0),
-		FlxColor.fromRGB(255, 0 , 0)
+		FlxColor.fromRGB(255, 0, 0)
 	];
 
 	var skippedFrames = 0;
@@ -60,17 +56,17 @@ class MusicBeatState extends FlxUIState
 			stepHit();
 
 		if (FlxG.save.data.fpsRain && skippedFrames >= 6)
-			{
-				if (currentColor >= array.length)
-					currentColor = 0;
-				(cast (Lib.current.getChildAt(0), Main)).changeFPSColor(array[currentColor]);
-				currentColor++;
-				skippedFrames = 0;
-			}
-			else
-				skippedFrames++;
+		{
+			if (currentColor >= array.length)
+				currentColor = 0;
+			(cast (Lib.current.getChildAt(0), Main)).changeFPSColor(array[currentColor]);
+			currentColor++;
+			skippedFrames = 0;
+		}
+		else
+			skippedFrames++;
 
-		if ((cast (Lib.current.getChildAt(0), Main)).getFPSCap != FlxG.save.data.fpsCap && FlxG.save.data.fpsCap <= 290)
+		if ((cast (Lib.current.getChildAt(0), Main)).getFPSCap() != FlxG.save.data.fpsCap && FlxG.save.data.fpsCap <= 290)
 			(cast (Lib.current.getChildAt(0), Main)).setFPSCap(FlxG.save.data.fpsCap);
 
 		super.update(elapsed);
@@ -111,7 +107,7 @@ class MusicBeatState extends FlxUIState
 	{
 		//do literally nothing dumbass
 	}
-	
+
 	public function fancyOpenURL(schmancy:String)
 	{
 		#if linux

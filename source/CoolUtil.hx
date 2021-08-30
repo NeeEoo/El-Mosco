@@ -24,7 +24,7 @@ class CoolUtil
 
 		return daList;
 	}
-	
+
 	public static function coolStringFile(path:String):Array<String>
 	{
 		var daList:Array<String> = path.trim().split('\n');

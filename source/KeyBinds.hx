@@ -11,16 +11,14 @@ import flixel.input.keyboard.FlxKey;
 
 class KeyBinds
 {
-
-	public static function resetBinds():Void{
-
+	public static function resetBinds():Void
+	{
 		FlxG.save.data.upBind = "W";
 		FlxG.save.data.downBind = "S";
 		FlxG.save.data.leftBind = "A";
 		FlxG.save.data.rightBind = "D";
 		FlxG.save.data.killBind = "R";
 		PlayerSettings.player1.controls.loadKeyBinds();
-
 	}
 
 	public static function keyCheck():Void
@@ -46,5 +44,4 @@ class KeyBinds
 			trace("No KILL");
 		}
 	}
-
 }
