@@ -91,7 +91,6 @@
 	<haxelib name="flixel-ui" />
 	<haxelib name="faxe" if='switch'/>
 	<haxelib name="discord_rpc" if="windows"/>
-	<haxelib name="linc_luajit" if="windows"/>
 
 	<!-- <haxelib name="hxcpp-debug-server" if="desktop"/> -->
 

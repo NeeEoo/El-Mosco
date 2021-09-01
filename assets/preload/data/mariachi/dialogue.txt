@@ -1,5 +1,6 @@
 >flip<
-:elmosco:PLACEHOLDER TEXT
-
+:elmosco:you can sing, right?
 >flip<
-:bf:PLACEHOLDER TEXT
+:bf:beep!
+>flip<
+:elmosco:Show me.

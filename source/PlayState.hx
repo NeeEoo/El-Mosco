@@ -179,8 +179,6 @@ class PlayState extends MusicBeatState
 	// BotPlay text
 	private var botPlayState:FlxText;
 
-	private var executeModchart = false;
-
 	// API stuff
 
 	public function addObject(object:FlxBasic) { add(object); }
@@ -214,14 +212,6 @@ class PlayState extends MusicBeatState
 
 		// pre lowercasing the song name (create)
 		var songLowercase = StringTools.replace(PlayState.SONG.song, " ", "-").toLowerCase();
-		#if windows
-		executeModchart = FileSystem.exists(Paths.lua(songLowercase  + "/modchart"));
-		#end
-		#if !cpp
-		executeModchart = false; // FORCE disable for non cpp targets
-		#end
-
-		trace('Mod chart: ' + executeModchart + " - " + Paths.lua(songLowercase + "/modchart"));
 
 		#if windows
 		// Making difficulty text for Discord Rich Presence.
@@ -592,24 +582,12 @@ class PlayState extends MusicBeatState
 
 	var startTimer:FlxTimer;
 
-	#if windows
-	public static var luaModchart:ModchartState = null;
-	#end
-
 	function startCountdown():Void
 	{
 		inCutscene = false;
 
 		generateStaticArrows(0);
 		generateStaticArrows(1);
-
-		#if windows
-		if (executeModchart)
-		{
-			luaModchart = ModchartState.createModchartState();
-			luaModchart.executeState('start',[PlayState.SONG.song]);
-		}
-		#end
 
 		startedCountdown = true;
 		Conductor.songPosition = 0 - Conductor.crochet * 5;
@@ -1013,51 +991,6 @@ class PlayState extends MusicBeatState
 			Timer.update(elapsed);
 		}
 
-		#if windows
-		if (executeModchart && luaModchart != null && songStarted)
-		{
-			luaModchart.setVar('songPos',Conductor.songPosition);
-			luaModchart.setVar('hudZoom', camHUD.zoom);
-			luaModchart.setVar('cameraZoom',FlxG.camera.zoom);
-			luaModchart.executeState('update', [elapsed]);
-
-			FlxG.camera.angle = luaModchart.getVar('cameraAngle', 'float');
-			camHUD.angle = luaModchart.getVar('camHudAngle','float');
-			camNOTESBF.angle = luaModchart.getVar('camHudAngle','float');
-			camNOTESDAD.angle = luaModchart.getVar('camHudAngle','float');
-
-			if (luaModchart.getVar("showOnlyStrums",'bool'))
-			{
-				healthBarBG.visible = false;
-				kadeEngineWatermark.visible = false;
-				healthBar.visible = false;
-				iconP1.visible = false;
-				iconP2.visible = false;
-				scoreTxt.visible = false;
-			}
-			else
-			{
-				healthBarBG.visible = true;
-				kadeEngineWatermark.visible = true;
-				healthBar.visible = true;
-				iconP1.visible = true;
-				iconP2.visible = true;
-				scoreTxt.visible = true;
-			}
-
-			var p1 = luaModchart.getVar("strumLine1Visible",'bool');
-			var p2 = luaModchart.getVar("strumLine2Visible",'bool');
-
-			for (i in 0...4)
-			{
-				strumLineNotes.members[i].visible = p1;
-				if (i <= playerStrums.length)
-					playerStrums.members[i].visible = p2;
-			}
-		}
-
-		#end
-
 		// reverse iterate to remove oldest notes first and not invalidate the iteration
 		// stop iteration as soon as a note is not removed
 		// all notes should be kept in the correct order and this is optimal, safe to do every frame/update
@@ -1119,13 +1052,6 @@ class PlayState extends MusicBeatState
 		if (FlxG.keys.justPressed.SEVEN)
 		{
 			FlxG.switchState(new ChartingState());
-			#if windows
-			if (luaModchart != null)
-			{
-				luaModchart.die();
-				luaModchart = null;
-			}
-			#end
 		}
 
 		iconP1.setGraphicSize(Std.int(FlxMath.lerp(150, iconP1.width, 0.50)));
@@ -1175,25 +1101,11 @@ class PlayState extends MusicBeatState
 		if (FlxG.keys.justPressed.EIGHT)
 		{
 			FlxG.switchState(new AnimationDebug(SONG.player2));
-			#if windows
-			if (luaModchart != null)
-			{
-				luaModchart.die();
-				luaModchart = null;
-			}
-			#end
 		}
 
 		if (FlxG.keys.justPressed.ZERO)
 		{
 			FlxG.switchState(new AnimationDebug(SONG.player1));
-			#if windows
-			if (luaModchart != null)
-			{
-				luaModchart.die();
-				luaModchart = null;
-			}
-			#end
 		}
 		#end
 
@@ -1216,27 +1128,9 @@ class PlayState extends MusicBeatState
 		{
 			var mustHit = PlayState.SONG.notes[Std.int(curStep / 16)].mustHitSection;
 
-			#if windows
-			if (luaModchart != null)
-				luaModchart.setVar("mustHit", mustHit);
-			#end
-
 			if (camFollow.x != dad.getMidpoint().x + 150 && !mustHit)
 			{
-				var offsetX = 0;
-				var offsetY = 0;
-				#if windows
-				if (luaModchart != null)
-				{
-					offsetX = luaModchart.getVar("followXOffset", "float");
-					offsetY = luaModchart.getVar("followYOffset", "float");
-				}
-				#end
-				camFollow.setPosition(dad.getMidpoint().x + 150 + offsetX, dad.getMidpoint().y - 100 + offsetY);
-				#if windows
-				if (luaModchart != null)
-					luaModchart.executeState('playerTwoTurn', []);
-				#end
+				camFollow.setPosition(dad.getMidpoint().x + 150, dad.getMidpoint().y - 100);
 
 				switch (dad.curCharacter)
 				{
@@ -1247,22 +1141,7 @@ class PlayState extends MusicBeatState
 
 			if (mustHit && camFollow.x != boyfriend.getMidpoint().x - 100)
 			{
-				var offsetX = 0;
-				var offsetY = 0;
-				#if windows
-				if (luaModchart != null)
-				{
-					offsetX = luaModchart.getVar("followXOffset", "float");
-					offsetY = luaModchart.getVar("followYOffset", "float");
-				}
-				#end
-				camFollow.setPosition(boyfriend.getMidpoint().x - 100 + offsetX, boyfriend.getMidpoint().y - 100 + offsetY);
-
-				#if windows
-				if (luaModchart != null)
-					luaModchart.executeState('playerOneTurn', []);
-				#end
-
+				camFollow.setPosition(boyfriend.getMidpoint().x - 100, boyfriend.getMidpoint().y - 100);
 				//switch (curStage)
 				//{
 				//	case 'mall':
@@ -1471,11 +1350,6 @@ class PlayState extends MusicBeatState
 						});
 					}
 
-					#if windows
-					if (luaModchart != null)
-						luaModchart.executeState('playerTwoSing', [noteData, Conductor.songPosition]);
-					#end
-
 					dad.holdTimer = 0;
 
 					if (SONG.needsVoices)
@@ -1575,14 +1449,6 @@ class PlayState extends MusicBeatState
 		if (FlxG.save.data.fpsCap > 290)
 			(cast (Lib.current.getChildAt(0), Main)).setFPSCap(290);
 
-		#if windows
-		if (luaModchart != null)
-		{
-			luaModchart.die();
-			luaModchart = null;
-		}
-		#end
-
 		canPause = false;
 		FlxG.sound.music.volume = 0;
 		vocals.volume = 0;
@@ -1612,14 +1478,6 @@ class PlayState extends MusicBeatState
 				transOut = FlxTransitionableState.defaultTransOut;
 
 				FlxG.switchState(new MainMenuState());
-
-				#if windows
-				if (luaModchart != null)
-				{
-					luaModchart.die();
-					luaModchart = null;
-				}
-				#end
 
 				if (SONG.validScore)
 				{
@@ -1897,14 +1755,6 @@ class PlayState extends MusicBeatState
 			controls.UP_R,
 			controls.RIGHT_R
 		];
-		#if windows
-		if (luaModchart != null) {
-			if (controls.LEFT_P) luaModchart.executeState('keyPressed',["left"]);
-			if (controls.DOWN_P) luaModchart.executeState('keyPressed',["down"]);
-			if (controls.UP_P) luaModchart.executeState('keyPressed',["up"]);
-			if (controls.RIGHT_P) luaModchart.executeState('keyPressed',["right"]);
-		};
-		#end
 
 		// Prevent player input if botplay is on
 		if(FlxG.save.data.botplay)
@@ -2104,11 +1954,6 @@ class PlayState extends MusicBeatState
 					boyfriend.playAnim('singRIGHTmiss', true);
 			}
 
-			#if windows
-			if (luaModchart != null)
-				luaModchart.executeState('playerOneMiss', [direction, Conductor.songPosition]);
-			#end
-
 			updateAccuracy();
 		}
 	}
@@ -2168,11 +2013,6 @@ class PlayState extends MusicBeatState
 					boyfriend.playAnim('singRIGHT', true);
 			}
 
-			#if windows
-			if (luaModchart != null)
-				luaModchart.executeState('playerOneSing', [note.noteData, Conductor.songPosition]);
-			#end
-
 			playerStrums.forEach(function(spr:FlxSprite)
 			{
 				if (Math.abs(note.noteData) == spr.ID)
@@ -2201,14 +2041,6 @@ class PlayState extends MusicBeatState
 		{
 			resyncVocals();
 		}
-
-		#if windows
-		if (executeModchart && luaModchart != null)
-		{
-			luaModchart.setVar('curStep',curStep);
-			luaModchart.executeState('stepHit',[curStep]);
-		}
-		#end
 
 		if(isCave && isSWARM) {
 			var duration = 20;
@@ -2259,9 +2091,6 @@ class PlayState extends MusicBeatState
 		#end
 	}
 
-	var lightningStrikeBeat:Int = 0;
-	var lightningOffset:Int = 8;
-
 	override function beatHit()
 	{
 		super.beatHit();
@@ -2270,14 +2099,6 @@ class PlayState extends MusicBeatState
 		{
 			notes.sort(FlxSort.byY, (FlxG.save.data.downscroll ? FlxSort.ASCENDING : FlxSort.DESCENDING));
 		}
-
-		#if windows
-		if (executeModchart && luaModchart != null)
-		{
-			luaModchart.setVar('curBeat',curBeat);
-			luaModchart.executeState('beatHit',[curBeat]);
-		}
-		#end
 
 		if (SONG.notes[Math.floor(curStep / 16)] != null)
 		{
@@ -2327,6 +2148,4 @@ class PlayState extends MusicBeatState
 			dad.dance();
 		}
 	}
-
-	var curLight:Int = 0;
 }
