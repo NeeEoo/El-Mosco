@@ -27,9 +27,9 @@ class MainMenuState extends MusicBeatState
 	var menuItems:FlxTypedGroup<FlxSprite>;
 
 	#if !switch
-	var optionShit:Array<String> = ['story mode', 'freeplay', 'donate', 'options'];
+	var optionShit:Array<String> = ['story mode', 'donate', 'options'];
 	#else
-	var optionShit:Array<String> = ['story mode', 'freeplay'];
+	var optionShit:Array<String> = ['story mode'];
 	#end
 
 	var newGaming:FlxText;
@@ -207,12 +207,22 @@ class MainMenuState extends MusicBeatState
 		switch (daChoice)
 		{
 			case 'story mode':
-				FlxG.switchState(new StoryMenuState());
-				trace("Story Menu Selected");
-			case 'freeplay':
-				FlxG.switchState(new FreeplayState());
+				persistentUpdate = false;
+				PlayState.storyPlaylist = ['Mariachi', 'SWARM'];
+				PlayState.isStoryMode = true;
 
-				trace("Freeplay Menu Selected");
+				var diffic = "-hard";
+
+				PlayState.storyDifficulty = 2;
+
+				PlayState.SONG = Song.loadFromJson(PlayState.storyPlaylist[0].toLowerCase() + diffic, PlayState.storyPlaylist[0].toLowerCase());
+				PlayState.storyWeek = 0;
+				PlayState.campaignScore = 0;
+				PlayState.showedDialogue = false;
+				new FlxTimer().start(1, function(tmr:FlxTimer)
+				{
+					LoadingState.loadAndSwitchState(new PlayState(), true);
+				});
 
 			case 'options':
 				FlxG.switchState(new OptionsMenu());

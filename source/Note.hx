@@ -11,6 +11,13 @@ using StringTools;
 
 class Note extends FlxSprite
 {
+	public static inline var DEFAULT:Int = 0;
+	public static inline var HURT:Int = 1;
+
+	public var isNormal:Bool = false;
+	public var isHurt:Bool = false;
+	public var noteType:Int = DEFAULT;
+
 	public var strumTime:Float = 0;
 
 	public var mustPress:Bool = false;
@@ -29,7 +36,7 @@ class Note extends FlxSprite
 
 	public var rating:String = "shit";
 
-	public function new(strumTime:Float, noteData:Int, ?prevNote:Note, ?sustainNote:Bool = false)
+	public function new(strumTime:Float, noteData:Int, ?prevNote:Note, ?sustainNote:Bool = false, type:Int = DEFAULT)
 	{
 		super();
 
@@ -49,29 +56,76 @@ class Note extends FlxSprite
 
 		this.noteData = noteData;
 
-		frames = Paths.getSparrowAtlas('NOTE_assets');
+		this.noteType = type;
+		isNormal = type == DEFAULT;
+		isHurt = type == HURT;
 
-		if (isSustainNote)
-		{
-			animation.addByPrefix('purpleholdend', 'pruple end hold');
-			animation.addByPrefix('greenholdend', 'green hold end');
-			animation.addByPrefix('redholdend', 'red hold end');
-			animation.addByPrefix('blueholdend', 'blue hold end');
-
-			animation.addByPrefix('purplehold', 'purple hold piece');
-			animation.addByPrefix('greenhold', 'green hold piece');
-			animation.addByPrefix('redhold', 'red hold piece');
-			animation.addByPrefix('bluehold', 'blue hold piece');
-		} else {
-			animation.addByPrefix('greenScroll', 'green0');
-			animation.addByPrefix('redScroll', 'red0');
-			animation.addByPrefix('blueScroll', 'blue0');
-			animation.addByPrefix('purpleScroll', 'purple0');
+		if(isSustainNote && prevNote.isHurt) {
+			isHurt = true;
 		}
 
-		setGraphicSize(Std.int(width * 0.7));
-		updateHitbox();
-		antialiasing = true;
+		if(isNormal) {
+			frames = Paths.getSparrowAtlas('NOTE_assets');
+
+			if (isSustainNote)
+			{
+				animation.addByPrefix('purpleholdend', 'pruple end hold');
+				animation.addByPrefix('greenholdend', 'green hold end');
+				animation.addByPrefix('redholdend', 'red hold end');
+				animation.addByPrefix('blueholdend', 'blue hold end');
+
+				animation.addByPrefix('purplehold', 'purple hold piece');
+				animation.addByPrefix('greenhold', 'green hold piece');
+				animation.addByPrefix('redhold', 'red hold piece');
+				animation.addByPrefix('bluehold', 'blue hold piece');
+			} else {
+				animation.addByPrefix('greenScroll', 'green0');
+				animation.addByPrefix('redScroll', 'red0');
+				animation.addByPrefix('blueScroll', 'blue0');
+				animation.addByPrefix('purpleScroll', 'purple0');
+			}
+
+			setGraphicSize(Std.int(width * 0.7));
+			updateHitbox();
+			antialiasing = true;
+		}
+		else if(isHurt)
+		{
+			frames = Paths.getSparrowAtlas('HURTNOTE_assets', 'elmosco');
+			//if(!FlxG.save.data.downscroll)
+			//{
+			//	animation.addByPrefix('blueScroll', 'blue fire');
+			//	animation.addByPrefix('greenScroll', 'green fire');
+			//}
+			//else
+			//{
+			//	animation.addByPrefix('greenScroll', 'blue fire');
+			//	animation.addByPrefix('blueScroll', 'green fire');
+			//	flipY = true;
+			//}
+			if (isSustainNote)
+			{
+				animation.addByPrefix('purpleholdend', 'pruple end hold');
+				animation.addByPrefix('greenholdend', 'green hold end');
+				animation.addByPrefix('redholdend', 'red hold end');
+				animation.addByPrefix('blueholdend', 'blue hold end');
+
+				animation.addByPrefix('purplehold', 'purple hold piece');
+				animation.addByPrefix('greenhold', 'green hold piece');
+				animation.addByPrefix('redhold', 'red hold piece');
+				animation.addByPrefix('bluehold', 'blue hold piece');
+			} else {
+				animation.addByPrefix('greenScroll', 'green0');
+				animation.addByPrefix('redScroll', 'red0');
+				animation.addByPrefix('blueScroll', 'blue0');
+				animation.addByPrefix('purpleScroll', 'purple0');
+			}
+
+			setGraphicSize(Std.int(width * 0.7));
+			updateHitbox();
+			antialiasing = true;
+			//setGraphicSize(Std.int(width * 0.86));
+		}
 
 		x += swagWidth * noteData;
 		if(!isSustainNote) {
@@ -89,7 +143,7 @@ class Note extends FlxSprite
 		// we make sure its downscroll and its a SUSTAIN NOTE (aka a trail, not a note)
 		// and flip it so it doesn't look weird.
 		// THIS DOESN'T FUCKING FLIP THE NOTE, CONTRIBUTERS DON'T JUST COMMENT THIS OUT JESUS
-		if (sustainNote && FlxG.save.data.downscroll)
+		if (isSustainNote && FlxG.save.data.downscroll)
 			flipY = true;
 
 		if (isSustainNote && prevNote != null)
@@ -100,14 +154,14 @@ class Note extends FlxSprite
 
 			switch (noteData)
 			{
+				case 0:
+					animation.play('purpleholdend');
+				case 1:
+					animation.play('blueholdend');
 				case 2:
 					animation.play('greenholdend');
 				case 3:
 					animation.play('redholdend');
-				case 1:
-					animation.play('blueholdend');
-				case 0:
-					animation.play('purpleholdend');
 			}
 
 			updateHitbox();
@@ -141,6 +195,11 @@ class Note extends FlxSprite
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
+
+		//No held fire notes :[ (Part 2)
+		//if(isSustainNote && prevNote.isHurt) {
+		//	this.kill();
+		//}
 
 		if (mustPress)
 		{
@@ -178,5 +237,10 @@ class Note extends FlxSprite
 			if (alpha > 0.3)
 				alpha = 0.3;
 		}
+	}
+
+	public static function getNoteType(note:Array<Dynamic>) {
+		var noteType = note.length > 3 ? note[3] : Note.DEFAULT;
+		return noteType;
 	}
 }

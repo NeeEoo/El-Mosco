@@ -17,13 +17,13 @@ class DialogueSystem extends FlxSpriteGroup
 	public var box:FlxSprite;
 
 	public var swagDialogue:FlxTypeText;
-	public var swagDialogueColor:Int = 0xFF3F2021;
+	public var swagDialogueColor:Int = FlxColor.BLACK;
 	public var swagDialogueSounds:Array<FlxSound>;
 
 	// Dropshadow
 	public var dropText:FlxText;
 	public var dropTextColor:Int = 0xFFD89494;
-	public var dropTextVisible:Bool = true;
+	public var dropTextVisible:Bool = false;
 
 	public var background:FlxSprite;
 
@@ -44,7 +44,7 @@ class DialogueSystem extends FlxSpriteGroup
 	public var boxScale:Float = 0.9;
 
 	public var defaultFont:String = "";
-	public var fontSize:Int = 32;
+	public var fontSize:Int = 40;
 
 	public var clickFX:String = 'clickText';
 
@@ -55,7 +55,6 @@ class DialogueSystem extends FlxSpriteGroup
 	public var curVoice:FlxSound;
 	public var isFadingMusic:Bool = false;
 	public var fadeOutMusicDuration:Float = 2.2;
-	public var wordWrapWidth:Int = Std.int(FlxG.width * 0.6);
 
 	public var shadowDistance:Int = 2;
 	public var dialogueX:Int = 240;
@@ -65,7 +64,10 @@ class DialogueSystem extends FlxSpriteGroup
 	{
 		super();
 
-		bgFade = new FlxSprite(-200, -200).makeGraphic(Std.int(FlxG.width * 1.3), Std.int(FlxG.height * 1.3), 0xFFB3DFd8);
+		if(dialogueList.length == 0) return;
+
+		//bgFade = new FlxSprite(-200, -200).makeGraphic(Std.int(FlxG.width * 1.3), Std.int(FlxG.height * 1.3), 0xFFB3DFd8);
+		bgFade = new FlxSprite(-200, -200).makeGraphic(Std.int(FlxG.width * 1.3), Std.int(FlxG.height * 1.3), 0xFF333333);
 		bgFade.scrollFactor.set();
 		bgFade.alpha = 0;
 		add(bgFade);
@@ -97,8 +99,6 @@ class DialogueSystem extends FlxSpriteGroup
 			}
 		}
 
-		if(dialogueList.length == 0) return;
-
 		box.frames = Paths.getSparrowAtlas('dialogue/speech_bubble_talking');
 
 		if(!changedBox) {
@@ -109,7 +109,7 @@ class DialogueSystem extends FlxSpriteGroup
 		pixelTextFX = FlxG.sound.load(Paths.sound('pixelText'), 0.6);
 		swagDialogueSounds = [pixelTextFX];
 
-		defaultFont = Paths.getAssetFont("pixel.otf");
+		defaultFont = Paths.getAssetFont("MPMangaFontBoldCustom.ttf");
 
 		progressDialogue(false);
 
@@ -142,14 +142,14 @@ class DialogueSystem extends FlxSpriteGroup
 			add(handSelect);
 		}
 
-		dropText = new FlxText(dialogueX + shadowDistance, dialogueY + shadowDistance, wordWrapWidth, "", fontSize);
+		dropText = new FlxText(dialogueX + shadowDistance, dialogueY + shadowDistance, Std.int(FlxG.width * 0.6), "", fontSize);
 		dropText.font = defaultFont;
 		dropText.color = dropTextColor;
 		dropText.visible = dropTextVisible;
 		dropText.alpha = dropTextVisible ? 1 : 0;
 		add(dropText);
 
-		swagDialogue = new FlxTypeText(dialogueX, dialogueY, wordWrapWidth, "", fontSize);
+		swagDialogue = new FlxTypeText(dialogueX, dialogueY, Std.int(FlxG.width * 0.6), "", fontSize);
 		swagDialogue.font = defaultFont;
 		swagDialogue.color = swagDialogueColor;
 		swagDialogue.sounds = swagDialogueSounds;
@@ -405,7 +405,6 @@ class DialogueSystem extends FlxSpriteGroup
 					case 'boxanim': new PlayBoxAnim(data);
 					case 'portraitcolors': new SetPortraitColors(Std.parseInt(data));
 					case 'boxscale': new SetBoxScale(Std.parseFloat(data));
-					case 'wordwrap': new SetWordWrapWidth(Std.parseInt(data));
 					case 'bg': new SetBackground(data);
 					case 'hidebg': new HideBackground();
 					case 'voice': new PlayVoice(data);
@@ -817,24 +816,6 @@ class SetBoxScale extends DialogueEvent {
 
 	override public function runEvent() {
 		system.boxScale = scale;
-	}
-}
-
-class SetWordWrapWidth extends DialogueEvent {
-	public var width:Int;
-
-	public function new(width:Int) {
-		super();
-		this.width = width;
-	}
-
-	override public function runEvent() {
-		system.wordWrapWidth = width;
-
-		if(system.swagDialogue != null) {
-			system.swagDialogue.fieldWidth = width;
-			system.dropText.fieldWidth = width;
-		}
 	}
 }
 

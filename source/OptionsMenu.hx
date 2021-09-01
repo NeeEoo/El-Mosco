@@ -50,7 +50,6 @@ class OptionsMenu extends MusicBeatState
 		new OptionCategory("Misc", [
 			#if desktop
 			new FPSOption("Toggle the FPS Counter"),
-			new ReplayOption("View replays"),
 			#end
 			new FlashingLightsOption("Toggle flashing lights that can cause epileptic seizures and strain."),
 			new WatermarkOption("Enable and disable all watermarks from the engine."),

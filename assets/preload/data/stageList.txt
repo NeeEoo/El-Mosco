@@ -1,6 +1,2 @@
 stage
-halloween
-philly
-mall
-mallEvil
 cave

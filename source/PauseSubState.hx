@@ -21,7 +21,7 @@ class PauseSubState extends MusicBeatSubstate
 {
 	var grpMenuShit:FlxTypedGroup<Alphabet>;
 
-	var menuItems:Array<String> = ['Resume', 'Restart Song', 'Exit to menu'];
+	var menuItems:Array<String> = ['Resume', 'Restart Song', 'Restart With Dialogue', 'Exit to menu'];
 	var curSelected:Int = 0;
 
 	var pauseMusic:FlxSound;
@@ -109,7 +109,8 @@ class PauseSubState extends MusicBeatSubstate
 		if (upP)
 		{
 			changeSelection(-1);
-		}else if (downP)
+		}
+		else if (downP)
 		{
 			changeSelection(1);
 		}
@@ -127,7 +128,7 @@ class PauseSubState extends MusicBeatSubstate
 			{
 				grpMenuShit.clear();
 
-				menuItems = ['Restart Song', 'Exit to menu'];
+				menuItems = ['Restart Song', 'Restart With Dialogue', 'Exit to menu'];
 
 				for (i in 0...menuItems.length)
 				{
@@ -153,7 +154,7 @@ class PauseSubState extends MusicBeatSubstate
 			{
 				grpMenuShit.clear();
 
-				menuItems = ['Restart Song', 'Exit to menu'];
+				menuItems = ['Restart Song', 'Restart With Dialogue', 'Exit to menu'];
 
 				for (i in 0...menuItems.length)
 				{
@@ -181,14 +182,10 @@ class PauseSubState extends MusicBeatSubstate
 					close();
 				case "Restart Song":
 					FlxG.resetState();
+				case "Restart With Dialogue":
+					PlayState.showedDialogue = false;
+					FlxG.resetState();
 				case "Exit to menu":
-					if(PlayState.loadRep)
-					{
-						FlxG.save.data.botplay = false;
-						FlxG.save.data.scrollSpeed = 1;
-						FlxG.save.data.downscroll = false;
-					}
-					PlayState.loadRep = false;
 					#if windows
 					if (PlayState.luaModchart != null)
 					{
