@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="Elmosco_ASSETS.png">
+	<!-- Created with Adobe Animate version 20.5.0.29329 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="elMosco_Down0000" x="5" y="5" width="769" height="783" frameX="0" frameY="-13" frameWidth="769" frameHeight="796"/>
+	<SubTexture name="elMosco_Down0001" x="779" y="5" width="704" height="796" frameX="-11" frameY="0" frameWidth="769" frameHeight="796"/>
+	<SubTexture name="elMosco_Down0002" x="779" y="5" width="704" height="796" frameX="-11" frameY="0" frameWidth="769" frameHeight="796"/>
+	<SubTexture name="elMosco_Down0003" x="779" y="5" width="704" height="796" frameX="-11" frameY="0" frameWidth="769" frameHeight="796"/>
+	<SubTexture name="elMosco_Down0004" x="779" y="5" width="704" height="796" frameX="-11" frameY="0" frameWidth="769" frameHeight="796"/>
+	<SubTexture name="elMosco_Down0005" x="779" y="5" width="704" height="796" frameX="-11" frameY="0" frameWidth="769" frameHeight="796"/>
+	<SubTexture name="elMosco_Down0006" x="779" y="5" width="704" height="796" frameX="-11" frameY="0" frameWidth="769" frameHeight="796"/>
+	<SubTexture name="elMosco_Down0007" x="779" y="5" width="704" height="796" frameX="-11" frameY="0" frameWidth="769" frameHeight="796"/>
+	<SubTexture name="elMosco_Down0008" x="1488" y="5" width="769" height="783" frameX="0" frameY="-13" frameWidth="769" frameHeight="796"/>
+	<SubTexture name="elMosco_Idle0000" x="2262" y="5" width="806" height="899" frameX="0" frameY="-60" frameWidth="806" frameHeight="960"/>
+	<SubTexture name="elMosco_Idle0001" x="3073" y="5" width="735" height="945" frameX="-35" frameY="-14" frameWidth="806" frameHeight="960"/>
+	<SubTexture name="elMosco_Idle0002" x="5" y="955" width="714" height="954" frameX="-46" frameY="-6" frameWidth="806" frameHeight="960"/>
+	<SubTexture name="elMosco_Idle0003" x="724" y="955" width="711" height="955" frameX="-47" frameY="-4" frameWidth="806" frameHeight="960"/>
+	<SubTexture name="elMosco_Idle0004" x="1440" y="955" width="710" height="957" frameX="-48" frameY="-2" frameWidth="806" frameHeight="960"/>
+	<SubTexture name="elMosco_Idle0005" x="2155" y="955" width="711" height="959" frameX="-47" frameY="0" frameWidth="806" frameHeight="960"/>
+	<SubTexture name="elMosco_Idle0006" x="2155" y="955" width="711" height="959" frameX="-47" frameY="0" frameWidth="806" frameHeight="960"/>
+	<SubTexture name="elMosco_Idle0007" x="2155" y="955" width="711" height="959" frameX="-47" frameY="0" frameWidth="806" frameHeight="960"/>
+	<SubTexture name="elMosco_Left0000" x="2871" y="955" width="536" height="933" frameX="0" frameY="-18" frameWidth="536" frameHeight="951"/>
+	<SubTexture name="elMosco_Left0001" x="3412" y="955" width="504" height="951" frameX="-28" frameY="0" frameWidth="536" frameHeight="951"/>
+	<SubTexture name="elMosco_Left0002" x="3412" y="955" width="504" height="951" frameX="-28" frameY="0" frameWidth="536" frameHeight="951"/>
+	<SubTexture name="elMosco_Left0003" x="3412" y="955" width="504" height="951" frameX="-28" frameY="0" frameWidth="536" frameHeight="951"/>
+	<SubTexture name="elMosco_Left0004" x="3412" y="955" width="504" height="951" frameX="-28" frameY="0" frameWidth="536" frameHeight="951"/>
+	<SubTexture name="elMosco_Left0005" x="3412" y="955" width="504" height="951" frameX="-28" frameY="0" frameWidth="536" frameHeight="951"/>
+	<SubTexture name="elMosco_Left0006" x="3412" y="955" width="504" height="951" frameX="-28" frameY="0" frameWidth="536" frameHeight="951"/>
+	<SubTexture name="elMosco_Left0007" x="3412" y="955" width="504" height="951" frameX="-28" frameY="0" frameWidth="536" frameHeight="951"/>
+	<SubTexture name="elMosco_Left0008" x="2871" y="955" width="536" height="933" frameX="0" frameY="-18" frameWidth="536" frameHeight="951"/>
+	<SubTexture name="elMosco_Right0000" x="5" y="1919" width="816" height="862" frameX="-1" frameY="0" frameWidth="817" frameHeight="862"/>
+	<SubTexture name="elMosco_Right0001" x="826" y="1919" width="763" height="845" frameX="0" frameY="-17" frameWidth="817" frameHeight="862"/>
+	<SubTexture name="elMosco_Right0002" x="826" y="1919" width="763" height="845" frameX="0" frameY="-17" frameWidth="817" frameHeight="862"/>
+	<SubTexture name="elMosco_Right0003" x="826" y="1919" width="763" height="845" frameX="0" frameY="-17" frameWidth="817" frameHeight="862"/>
+	<SubTexture name="elMosco_Right0004" x="826" y="1919" width="763" height="845" frameX="0" frameY="-17" frameWidth="817" frameHeight="862"/>
+	<SubTexture name="elMosco_Right0005" x="826" y="1919" width="763" height="845" frameX="0" frameY="-17" frameWidth="817" frameHeight="862"/>
+	<SubTexture name="elMosco_Right0006" x="826" y="1919" width="763" height="845" frameX="0" frameY="-17" frameWidth="817" frameHeight="862"/>
+	<SubTexture name="elMosco_Right0007" x="826" y="1919" width="763" height="845" frameX="0" frameY="-17" frameWidth="817" frameHeight="862"/>
+	<SubTexture name="elMosco_Right0008" x="1594" y="1919" width="816" height="862" frameX="-1" frameY="0" frameWidth="817" frameHeight="862"/>
+	<SubTexture name="elMosco_Up0000" x="2415" y="1919" width="683" height="979" frameX="0" frameY="0" frameWidth="692" frameHeight="979"/>
+	<SubTexture name="elMosco_Up0001" x="3103" y="1919" width="680" height="960" frameX="-12" frameY="-19" frameWidth="692" frameHeight="979"/>
+	<SubTexture name="elMosco_Up0002" x="3103" y="1919" width="680" height="960" frameX="-12" frameY="-19" frameWidth="692" frameHeight="979"/>
+	<SubTexture name="elMosco_Up0003" x="3103" y="1919" width="680" height="960" frameX="-12" frameY="-19" frameWidth="692" frameHeight="979"/>
+	<SubTexture name="elMosco_Up0004" x="3103" y="1919" width="680" height="960" frameX="-12" frameY="-19" frameWidth="692" frameHeight="979"/>
+	<SubTexture name="elMosco_Up0005" x="3103" y="1919" width="680" height="960" frameX="-12" frameY="-19" frameWidth="692" frameHeight="979"/>
+	<SubTexture name="elMosco_Up0006" x="3103" y="1919" width="680" height="960" frameX="-12" frameY="-19" frameWidth="692" frameHeight="979"/>
+	<SubTexture name="elMosco_Up0007" x="3103" y="1919" width="680" height="960" frameX="-12" frameY="-19" frameWidth="692" frameHeight="979"/>
+	<SubTexture name="elMosco_Up0008" x="2415" y="1919" width="683" height="979" frameX="0" frameY="0" frameWidth="692" frameHeight="979"/>
+</TextureAtlas>
