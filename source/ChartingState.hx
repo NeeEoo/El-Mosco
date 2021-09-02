@@ -302,7 +302,6 @@ class ChartingState extends MusicBeatState
 		});
 
 		var characters:Array<String> = CoolUtil.coolTextFile(Paths.txt('characterList'));
-		var gfVersions:Array<String> = CoolUtil.coolTextFile(Paths.txt('gfVersionList'));
 		var stages:Array<String> = CoolUtil.coolTextFile(Paths.txt('stageList'));
 
 		var player1DropDown = new FlxUIDropDownMenu(10, 100, FlxUIDropDownMenu.makeStrIdLabelArray(characters, true), function(character:String)
@@ -320,14 +319,6 @@ class ChartingState extends MusicBeatState
 		player2DropDown.selectedLabel = _song.player2;
 
 		var player2Label = new FlxText(140,80,64,'Player 2');
-
-		var gfVersionDropDown = new FlxUIDropDownMenu(10, 200, FlxUIDropDownMenu.makeStrIdLabelArray(gfVersions, true), function(gfVersion:String)
-		{
-			_song.gfVersion = gfVersions[Std.parseInt(gfVersion)];
-		});
-		gfVersionDropDown.selectedLabel = _song.gfVersion;
-
-		var gfVersionLabel = new FlxText(10,180,64,'Girlfriend');
 
 		var stageDropDown = new FlxUIDropDownMenu(140, 200, FlxUIDropDownMenu.makeStrIdLabelArray(stages, true), function(stage:String)
 		{
@@ -366,8 +357,6 @@ class ChartingState extends MusicBeatState
 
 		var tab_group_assets = new FlxUI(null, UI_box);
 		tab_group_assets.name = "Assets";
-		tab_group_assets.add(gfVersionDropDown);
-		tab_group_assets.add(gfVersionLabel);
 		tab_group_assets.add(stageDropDown);
 		tab_group_assets.add(stageLabel);
 		tab_group_assets.add(player1DropDown);

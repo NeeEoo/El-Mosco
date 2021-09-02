@@ -109,7 +109,7 @@ class DialogueSystem extends FlxSpriteGroup
 		pixelTextFX = FlxG.sound.load(Paths.sound('pixelText'), 0.6);
 		swagDialogueSounds = [pixelTextFX];
 
-		defaultFont = Paths.getAssetFont("MPMangaFontBoldCustom.ttf");
+		defaultFont = "MP Manga Font Bold";//Paths.getAssetFont("MPMangaFontBoldCustom.otf");
 
 		progressDialogue(false);
 
