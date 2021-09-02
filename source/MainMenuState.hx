@@ -40,8 +40,11 @@ class MainMenuState extends MusicBeatState
 	public static var kadeEngineVer:String = "1.5.2" + nightly;
 	public static var gameVer:String = "0.2.7.1";
 
+	var bg:FlxSprite;
 	var magenta:FlxSprite;
 	var camFollow:FlxObject;
+
+	var darker = 0xFF303030;
 
 	override function create()
 	{
@@ -57,13 +60,14 @@ class MainMenuState extends MusicBeatState
 
 		persistentUpdate = persistentDraw = true;
 
-		var bg:FlxSprite = new FlxSprite(-100).loadGraphic(Paths.image('menuBG'));
+		bg = new FlxSprite(-100).loadGraphic(Paths.image('menuBG'));
 		bg.scrollFactor.x = 0;
 		bg.scrollFactor.y = 0.10;
 		bg.setGraphicSize(Std.int(bg.width * 1.1));
 		bg.updateHitbox();
 		bg.screenCenter();
 		bg.antialiasing = true;
+		if(Main.harderLol) bg.color = darker;
 		add(bg);
 
 		camFollow = new FlxObject(0, 0, 1, 1);
@@ -118,8 +122,35 @@ class MainMenuState extends MusicBeatState
 
 	var selectedSomethin:Bool = false;
 
+	var secretCheck:String = "";
+
+	function secretHandler(secret:String) {
+		Main.harderLol = !Main.harderLol;
+		var dur = 0.25;
+		if(Main.harderLol) {
+			FlxTween.color(bg, dur, 0xFFFFFFFF, darker);
+		} else {
+			FlxTween.color(bg, dur, darker, 0xFFFFFFFF);
+		}
+	}
+
 	override function update(elapsed:Float)
 	{
+		var pressed = FlxG.keys.firstJustPressed();
+		if(pressed > 0) {
+			secretCheck += String.fromCharCode(pressed).toLowerCase();
+
+			var secret = "harderlol";
+			if(secret.startsWith(secretCheck)) {
+				if(secret == secretCheck) {
+					secretHandler(secret);
+					secretCheck = "";
+				}
+			} else {
+				secretCheck = "";
+			}
+		}
+
 		if (FlxG.sound.music.volume < 0.8)
 		{
 			FlxG.sound.music.volume += 0.5 * FlxG.elapsed;

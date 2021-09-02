@@ -6,7 +6,6 @@ import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.addons.text.FlxTypeText;
 import flixel.group.FlxSpriteGroup;
-import flixel.text.FlxText;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 
@@ -19,11 +18,6 @@ class DialogueSystem extends FlxSpriteGroup
 	public var swagDialogue:FlxTypeText;
 	public var swagDialogueColor:Int = FlxColor.BLACK;
 	public var swagDialogueSounds:Array<FlxSound>;
-
-	// Dropshadow
-	public var dropText:FlxText;
-	public var dropTextColor:Int = 0xFFD89494;
-	public var dropTextVisible:Bool = false;
 
 	public var background:FlxSprite;
 
@@ -42,8 +36,6 @@ class DialogueSystem extends FlxSpriteGroup
 	public var textDelay:Float = 0.04;
 	public var doClickFX:Bool = true;
 	public var boxScale:Float = 0.9;
-
-	public var defaultFont:String = "";
 	public var fontSize:Int = 40;
 
 	public var clickFX:String = 'clickText';
@@ -55,10 +47,6 @@ class DialogueSystem extends FlxSpriteGroup
 	public var curVoice:FlxSound;
 	public var isFadingMusic:Bool = false;
 	public var fadeOutMusicDuration:Float = 2.2;
-
-	public var shadowDistance:Int = 2;
-	public var dialogueX:Int = 240;
-	public var dialogueY:Int = 500;
 
 	public function new(?dialogueList:Array<String>)
 	{
@@ -109,8 +97,6 @@ class DialogueSystem extends FlxSpriteGroup
 		pixelTextFX = FlxG.sound.load(Paths.sound('pixelText'), 0.6);
 		swagDialogueSounds = [pixelTextFX];
 
-		defaultFont = "MP Manga Font Bold";//Paths.getAssetFont("MPMangaFontBoldCustom.otf");
-
 		progressDialogue(false);
 
 		box.antialiasing = true;
@@ -142,15 +128,8 @@ class DialogueSystem extends FlxSpriteGroup
 			add(handSelect);
 		}
 
-		dropText = new FlxText(dialogueX + shadowDistance, dialogueY + shadowDistance, Std.int(FlxG.width * 0.6), "", fontSize);
-		dropText.font = defaultFont;
-		dropText.color = dropTextColor;
-		dropText.visible = dropTextVisible;
-		dropText.alpha = dropTextVisible ? 1 : 0;
-		add(dropText);
-
-		swagDialogue = new FlxTypeText(dialogueX, dialogueY, Std.int(FlxG.width * 0.6), "", fontSize);
-		swagDialogue.font = defaultFont;
+		swagDialogue = new FlxTypeText(230, 500, Std.int(FlxG.width * 0.65), "", fontSize);
+		swagDialogue.font = "MP Manga Font Bold";
 		swagDialogue.color = swagDialogueColor;
 		swagDialogue.sounds = swagDialogueSounds;
 		add(swagDialogue);
@@ -164,8 +143,6 @@ class DialogueSystem extends FlxSpriteGroup
 
 	override function update(elapsed:Float)
 	{
-		dropText.text = swagDialogue.text;
-
 		if(box.animation.curAnim != null)
 		{
 			if(box.animation.curAnim.name == 'appear' && box.animation.curAnim.finished)
@@ -200,7 +177,6 @@ class DialogueSystem extends FlxSpriteGroup
 						bgFade.alpha -= 1 / 5 * 0.7;
 						hidePortraits();
 						swagDialogue.alpha -= 1 / 5;
-						dropText.alpha = swagDialogue.alpha;
 					}, 5);
 
 					new FlxTimer().start(1.2, function(tmr:FlxTimer)
@@ -391,7 +367,6 @@ class DialogueSystem extends FlxSpriteGroup
 					case 'changetextfx': new ChangeTextFX(data);
 					case 'toggleclickfx': new ToggleClickFX();
 					case 'toggletextfx': new ToggleTextFX();
-					case 'toggledroptext': new ToggleDropText();
 					case 'toggleboxflip': new ToggleBoxFlip();
 					case 'togglebgfade': new ToggleBGFade();
 					case 'textdelay': new TextDelay(Std.parseFloat(data));
@@ -399,7 +374,6 @@ class DialogueSystem extends FlxSpriteGroup
 					case 'changebox': new ChangeBox(data);
 					case 'flip': new FlipBox();
 					case 'movebox' | 'moveboxrel': new MoveBox(data, event == "moveboxrel");
-					case 'font': new SetFont(data);
 					case 'fontcolor': new SetFontColor(data);
 					case 'fontsize': new SetFontSize(Std.parseInt(data));
 					case 'boxanim': new PlayBoxAnim(data);
@@ -572,22 +546,6 @@ class ToggleBoxFlip extends DialogueEvent {
 	}
 }
 
-class ToggleDropText extends DialogueEvent {
-	override public function runEvent() {
-		system.dropTextVisible = !system.dropTextVisible;
-
-		if(system.dropText != null) {
-			if(system.dropTextVisible) {
-				system.dropText.visible = true;
-				system.dropText.alpha = 1;
-			} else {
-				system.dropText.visible = false;
-				system.dropText.alpha = 0;
-			}
-		}
-	}
-}
-
 class PlayVoice extends DialogueEvent {
 	public var filename:String;
 	public var voice:FlxSound;
@@ -740,25 +698,6 @@ class MoveBox extends DialogueEvent {
 	}
 }
 
-class SetFont extends DialogueEvent {
-	public var filename:String;
-
-	public function new(filename:String) {
-		super();
-		this.filename = filename;
-	}
-
-	override public function runEvent() {
-		var font = Paths.getAssetFont(filename);
-		system.defaultFont = font;
-
-		if(system.swagDialogue != null) {
-			system.swagDialogue.font = font;
-			system.dropText.font = font;
-		}
-	}
-}
-
 class SetFontColor extends DialogueEvent {
 	public var color:Int;
 	public var dropColor:Int;
@@ -777,14 +716,6 @@ class SetFontColor extends DialogueEvent {
 		} else {
 			system.swagDialogue.color = color;
 		}
-
-		if(dropColor != -1) {
-			if(system.dropText == null) {
-				system.dropTextColor = dropColor;
-			} else {
-				system.dropText.color = dropColor;
-			}
-		}
 	}
 }
 
@@ -801,7 +732,6 @@ class SetFontSize extends DialogueEvent {
 
 		if(system.swagDialogue != null) {
 			system.swagDialogue.size = size;
-			system.dropText.size = size;
 		}
 	}
 }

@@ -1,21 +1,27 @@
+>bgm<cavesound2
 >flip<
-:elmosco:Not bad..
-:elmosco:..not bad at all.
+:elmosco:Quite a remarkable singer, where'd you learn those bars amigo?
 
 >flip<
-:bf:bep bab boo
+:bf:bep bab boo.
 
 >flip<
-:elmosco:I don't care about that I'm leaving.
+:elmosco:That explains itself.
+
+:elmosco:Well then, I'm not here to keep you from leaving, unless you are.
+
+>flip<
+:bf:Bap.
+
+>flip<
+:elmosco:Is singing really the only thing you do in this world amigo?
 
 >flip<
 :bf:>:(
 
 >flip<
-:elmosco:out of my way.
+:elmosco: 
 
->flip<
-:bf:.
+:elmosco:Then it'll be the last thing you do.
 
->flip<
-:elmosco:it's your funeral.
+>fadeoutbgm<

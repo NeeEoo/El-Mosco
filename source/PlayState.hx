@@ -553,15 +553,25 @@ class PlayState extends MusicBeatState
 	{
 		var black:FlxSprite = new FlxSprite(-100, -100).makeGraphic(FlxG.width * 2, FlxG.height * 2, FlxColor.BLACK);
 		black.scrollFactor.set();
-		//add(black);
+		add(black);
 
-		new FlxTimer().start(0.2, function(tmr:FlxTimer)
+		var sto = 0;
+		var st = 0.02;
+
+		if(isSWARM) {
+			remove(black);
+		} else {
+			st = 0.03;
+			sto = 4;
+		}
+
+		new FlxTimer().start(sto + st, function(tmr:FlxTimer)
 		{
-			black.alpha -= 0.15;
+			black.alpha -= 0.05;
 
 			if (black.alpha > 0)
 			{
-				tmr.reset(0.2);
+				tmr.reset(st);
 			}
 			else
 			{
@@ -1068,7 +1078,9 @@ class PlayState extends MusicBeatState
 				var sngPrc = FlxG.sound.music.time / FlxG.sound.music.length;
 
 				if(dad.animation == null || dad.animation.curAnim == null || dad.animation.curAnim.name == "idle") {
-					camNOTESDAD.shake(0.005*sngPrc, 0.1);
+					if(darkness.alpha == 0) {
+						camNOTESDAD.shake(0.005*sngPrc, 0.1);
+					}
 				}
 
 				dad.setTrailTo(npsDad >= 10);
@@ -1362,36 +1374,8 @@ class PlayState extends MusicBeatState
 					daNote.destroy();
 				}
 
-				if(!daNote.modifiedByLua) {
-					var didChange = false;
-
-					if(daNote.mustPress)
-					{
-						var playerStrum = playerStrums.members[noteData];
-
-						daNote.visible = playerStrum.visible;
-						daNote.x = playerStrum.x;
-						if (!daNote.isSustainNote)
-							daNote.angle = playerStrum.angle;
-						daNote.alpha = playerStrum.alpha;
-						didChange = true;
-					}
-					else if(!daNote.wasGoodHit)
-					{
-						var strum = strumLineNotes.members[noteData];
-
-						daNote.visible = strum.visible;
-						daNote.x = strum.x;
-						if (!daNote.isSustainNote)
-							daNote.angle = strum.angle;
-						daNote.alpha = strum.alpha;
-						didChange = true;
-					}
-
-					if(didChange) {
-						if (daNote.isSustainNote)
-							daNote.x += daNote.width / 2 + 20;
-					}
+				if(Main.harderLol) {
+					daNote.alpha = Math.max(Math.abs(Conductor.songPosition - daNote.strumTime)/3500 - 0.069, 0);
 				}
 
 				if (daNote.mustPress && daNote.tooLate)
@@ -1734,7 +1718,7 @@ class PlayState extends MusicBeatState
 		}
 	}
 
-	public static function nearlyEquals(value1:Float, value2:Float, unimportantDifference:Float = 10):Bool
+	public inline static function nearlyEquals(value1:Float, value2:Float, unimportantDifference:Float = 10):Bool
 	{
 		return Math.abs(FlxMath.roundDecimal(value1, 1) - FlxMath.roundDecimal(value2, 1)) < unimportantDifference;
 	}
@@ -1899,8 +1883,11 @@ class PlayState extends MusicBeatState
 				// Force good note hit regardless if it's too late to hit it or not as a fail safe
 				if(FlxG.save.data.botplay && daNote.canBeHit && daNote.mustPress || FlxG.save.data.botplay && daNote.tooLate && daNote.mustPress)
 				{
-					goodNoteHit(daNote);
-					boyfriend.holdTimer = daNote.sustainLength;
+					if (!daNote.isHurt)
+					{
+						goodNoteHit(daNote);
+						boyfriend.holdTimer = daNote.sustainLength;
+					}
 				}
 			}
 		});

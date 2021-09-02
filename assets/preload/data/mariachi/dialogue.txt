@@ -1,6 +1,26 @@
+>bgm<cavesound2
+>sample<breakingWall
+:bf:?
+
 >flip<
-:elmosco:you can sing, right?
+:elmosco:Prison bars are nothing for my magnitude of swolage amigo.
+
 >flip<
-:bf:beep!
+:bf:Beep.
+
 >flip<
-:elmosco:Show me.
+:elmosco:.
+:elmosco:..
+:elmosco:...
+:elmosco:I take your stone cold face as a sign that I can only get you to cough with a song of my people.
+
+>flip<
+:bf:Bap.
+
+>flip<
+:elmosco:Join at your will, niño chiquito.
+
+>flip<
+:bf:Boop.
+
+>fadeoutbgm<

@@ -613,7 +613,6 @@ class ChartingState extends MusicBeatState
 			{
 				deleteNote(note);
 				delete = true;
-				trace('deelte note');
 			}
 		});
 		for (p in 0...pressArray.length)
@@ -647,9 +646,11 @@ class ChartingState extends MusicBeatState
 
 		if (curBeat % 4 == 0 && curStep >= 16 * (curSection + 1))
 		{
+			#if debug
 			trace(curStep);
 			trace((_song.notes[curSection].lengthInSteps) * (curSection + 1));
 			trace('DUMBSHIT');
+			#end
 
 			if (_song.notes[curSection + 1] == null)
 			{
@@ -748,7 +749,7 @@ class ChartingState extends MusicBeatState
 			{
 				if (FlxG.keys.justPressed.Z && lastNote != null)
 				{
-					trace(curRenderedNotes.members.contains(lastNote) ? "delete note" : "add note");
+					//trace(curRenderedNotes.members.contains(lastNote) ? "delete note" : "add note");
 					if (curRenderedNotes.members.contains(lastNote))
 						deleteNote(lastNote);
 					else

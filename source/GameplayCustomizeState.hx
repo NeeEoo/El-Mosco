@@ -69,7 +69,7 @@ class GameplayCustomizeState extends MusicBeatState
 
 		var camFollow = new FlxObject(0, 0, 1, 1);
 
-		dad = new Character(100, 100, 'dad');
+		dad = new Character(100, 100, 'elmosco');
 
 		bf = new Boyfriend(770, 450, 'bf');
 
@@ -92,8 +92,6 @@ class GameplayCustomizeState extends MusicBeatState
 		strumLine = new FlxSprite(0, FlxG.save.data.strumline).makeGraphic(FlxG.width, 14);
 		strumLine.scrollFactor.set();
 		strumLine.alpha = 0.4;
-
-		add(strumLine);
 
 		if (FlxG.save.data.downscroll)
 			strumLine.y = FlxG.height - 165;
@@ -145,18 +143,14 @@ class GameplayCustomizeState extends MusicBeatState
 		FlxG.camera.zoom = FlxMath.lerp(0.9, FlxG.camera.zoom, 0.95);
 		camHUD.zoom = FlxMath.lerp(1, camHUD.zoom, 0.95);
 
-		if (FlxG.mouse.overlaps(sick) && FlxG.mouse.pressed)
+		if(FlxG.mouse.pressed && FlxG.mouse.overlaps(sick))
 		{
-			sick.x = FlxG.mouse.x - sick.width / 2;
-			sick.y = FlxG.mouse.y - sick.height;
+			var pos = FlxG.mouse.getWorldPosition(camHUD);
+			sick.x = pos.x - sick.width / 2;
+			sick.y = pos.y - sick.height / 2;
 		}
 
-		for (i in playerStrums)
-			i.y = strumLine.y;
-		for (i in strumLineNotes)
-			i.y = strumLine.y;
-
-		if (FlxG.mouse.overlaps(sick) && FlxG.mouse.justReleased)
+		if(FlxG.mouse.justReleased && FlxG.mouse.overlaps(sick))
 		{
 			FlxG.save.data.changedHitX = sick.x;
 			FlxG.save.data.changedHitY = sick.y;

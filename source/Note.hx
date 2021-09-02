@@ -196,17 +196,11 @@ class Note extends FlxSprite
 	{
 		super.update(elapsed);
 
-		//No held fire notes :[ (Part 2)
-		//if(isSustainNote && prevNote.isHurt) {
-		//	this.kill();
-		//}
-
 		if (mustPress)
 		{
-			// ass
-			if (isSustainNote)
+			if (!isHurt)
 			{
-				if (strumTime > Conductor.songPosition - (Conductor.safeZoneOffset * 1.5)
+				if (strumTime > Conductor.songPosition - Conductor.safeZoneOffset
 					&& strumTime < Conductor.songPosition + (Conductor.safeZoneOffset * 0.5))
 					canBeHit = true;
 				else
@@ -214,8 +208,8 @@ class Note extends FlxSprite
 			}
 			else
 			{
-				if (strumTime > Conductor.songPosition - Conductor.safeZoneOffset
-					&& strumTime < Conductor.songPosition + Conductor.safeZoneOffset)
+				if (strumTime > Conductor.songPosition - (Conductor.safeZoneOffset * 0.6)
+					&& strumTime < Conductor.songPosition + (Conductor.safeZoneOffset * 0.4)) // also they're almost impossible to hit late!
 					canBeHit = true;
 				else
 					canBeHit = false;

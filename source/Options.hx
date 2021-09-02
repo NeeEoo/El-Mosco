@@ -511,7 +511,6 @@ class CustomizeGameplay extends Option
 
 	public override function press():Bool
 	{
-		trace("switch");
 		FlxG.switchState(new GameplayCustomizeState());
 		return false;
 	}
